@@ -1,0 +1,19 @@
+package com.customerService.busines.mappers;
+import com.customerService.busines.repository.model.CustomerDAO;
+import com.customerService.model.Customer;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+
+
+@Mapper(componentModel = "spring", uses = AddressMapper.class)
+public interface CustomerMapper {
+    @Mappings({
+            @Mapping(source = "address", target = "addressDAO")
+    })
+    CustomerDAO customerToDAO (Customer customer);
+    @Mappings({
+            @Mapping(source = "addressDAO", target = "address")
+    })
+    Customer daoToCustomer (CustomerDAO customerDAO);
+}
