@@ -1,7 +1,7 @@
-package com.customerService.busines.service.impl;
+package com.customerService.business.service.impl;
 
-import com.customerService.busines.repository.AddressRepository;
-import com.customerService.busines.service.AddressService;
+import com.customerService.business.repository.AddressRepository;
+import com.customerService.business.service.AddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

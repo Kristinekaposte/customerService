@@ -1,4 +1,4 @@
-package com.customerService.busines.service;
+package com.customerService.business.service;
 
 import com.customerService.model.Customer;
 
@@ -16,6 +16,6 @@ public interface CustomerService {
 
     Boolean deleteCustomerById(Long id);
 
-    boolean isEmailValid(String email);
+    boolean isEmailExisting(String email);
     boolean isCustomerPresent(Long id);
 }

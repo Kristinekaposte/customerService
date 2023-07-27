@@ -1,5 +1,5 @@
-package com.customerService.busines.mappers;
-import com.customerService.busines.repository.model.CustomerDAO;
+package com.customerService.business.mappers;
+import com.customerService.business.repository.model.CustomerDAO;
 import com.customerService.model.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

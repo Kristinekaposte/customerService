@@ -1,6 +1,6 @@
 package com.customerService.web.controller;
 
-import com.customerService.busines.service.CustomerService;
+import com.customerService.business.service.CustomerService;
 import com.customerService.model.Customer;
 import com.customerService.swagger.DescriptionVariables;
 import io.swagger.annotations.Api;
@@ -86,7 +86,7 @@ public class CustomerController {
             @ApiResponse(code = 500, message = "Server error")})
     public ResponseEntity<?> saveCustomer(@RequestBody @Valid Customer customer) {
         String email = customer.getEmail();
-        if (customerService.isEmailValid(email)) {
+        if (customerService.isEmailExisting(email)) {
             return new ResponseEntity<>("Sorry, the email " + email + " is already registered.", HttpStatus.BAD_REQUEST);
         }
         Customer savedCustomer = customerService.saveCustomer(customer);
@@ -109,7 +109,7 @@ public class CustomerController {
             return new ResponseEntity<>("Sorry, the customer id " + id + " does not exist.", HttpStatus.NOT_FOUND);
         }
         String email = updatedCustomer.getEmail();
-        if (customerService.isEmailValid(email)) {
+        if (customerService.isEmailExisting(email)) {
             log.info("Customer with email {} is already registered.", email);
             return new ResponseEntity<>("Sorry, the email " + email + " is already registered.", HttpStatus.BAD_REQUEST);
         }

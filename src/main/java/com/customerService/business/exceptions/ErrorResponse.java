@@ -1,9 +1,7 @@
-package com.customerService.busines.exceptions;
+package com.customerService.business.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

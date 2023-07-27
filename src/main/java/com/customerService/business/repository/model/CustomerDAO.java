@@ -1,4 +1,4 @@
-package com.customerService.busines.repository.model;
+package com.customerService.business.repository.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

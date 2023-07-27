@@ -1,6 +1,6 @@
-package com.customerService.busines.repository;
+package com.customerService.business.repository;
 
-import com.customerService.busines.repository.model.AddressDAO;
+import com.customerService.business.repository.model.AddressDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
