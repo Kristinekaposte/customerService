@@ -41,9 +41,4 @@ public class Address {
     @Size(max = 10, message = "postalCode should be max 10 characters")
     @NotBlank(message = "postalCode cannot be Empty or blank")
     private String postalCode;
-
-
-
-//  @ApiModelProperty(notes = "The customer ID associated with this address")
-//  private Long customerId; //to store the customer ID
 }

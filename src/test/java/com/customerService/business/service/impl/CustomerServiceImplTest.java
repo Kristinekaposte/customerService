@@ -100,54 +100,27 @@ public class CustomerServiceImplTest {
 
     @Test
     void testSaveCustomer_Successful() {
-        when(customerMapper.customerToDAO(customer)).thenReturn(customerDAO); // Mocking the customerToDAO mapping
-        when(customerRepository.save(customerDAO)).thenReturn(customerDAO); // Mocking the customerRepository save method
-        when(customerMapper.daoToCustomer(customerDAO)).thenReturn(customer); // Mocking the daoToCustomer mapping
+        when(customerMapper.customerToDAO(customer)).thenReturn(customerDAO);
+        when(customerRepository.save(customerDAO)).thenReturn(customerDAO);
+        when(customerMapper.daoToCustomer(customerDAO)).thenReturn(customer);
         Customer savedCustomer = customerService.saveCustomer(customer);
         assertNotNull(savedCustomer);
         assertEquals(customer, savedCustomer);
-        verify(customerMapper, times(1)).customerToDAO(customer); // Verifying that customerToDAO mapping was called once
-        verify(customerRepository, times(1)).save(customerDAO); // Verifying that save method was called once
-        verify(customerMapper, times(1)).daoToCustomer(customerDAO); // Verifying that daoToCustomer mapping was called once
+        verify(customerMapper, times(1)).customerToDAO(customer);
+        verify(customerRepository, times(1)).save(customerDAO);
+        verify(customerMapper, times(1)).daoToCustomer(customerDAO);
     }
 
     @Test
     void testSaveCustomer_Unsuccessful() {
-        when(customerMapper.customerToDAO(customer)).thenReturn(customerDAO); // Mocking the customerToDAO mapping
-        when(customerRepository.save(customerDAO)).thenReturn(null); // Mocking the customerRepository save method to return null
+        when(customerMapper.customerToDAO(customer)).thenReturn(customerDAO);
+        when(customerRepository.save(customerDAO)).thenReturn(null);
         Customer savedCustomer = customerService.saveCustomer(customer);
-        // Asserting that the save operation was unsuccessful, and the returned customer is null
         assertNull(savedCustomer);
-        verify(customerMapper, times(1)).customerToDAO(customer); // Verifying that customerToDAO mapping was called once
-        verify(customerRepository, times(1)).save(customerDAO); // Verifying that save method was called once
-        verify(customerMapper, times(0)).daoToCustomer(any()); // Verifying that daoToCustomer mapping was NOT called
+        verify(customerMapper, times(1)).customerToDAO(customer);
+        verify(customerRepository, times(1)).save(customerDAO);
+        verify(customerMapper, times(0)).daoToCustomer(any());
     }
-
-//    @Test
-//    public void testEditCustomerById_Successful() {
-//        // Mock the behavior for customerRepository.findById
-//        when(customerRepository.findById(1L)).thenReturn(Optional.of(customerDAO));
-//
-//        // Mock the behavior for addressMapper.addressToDAO
-//        when(addressMapper.addressToDAO(any())).thenReturn(customerDAO.getAddressDAO());
-//
-//        // Mock the behavior for customerRepository.save
-//        when(customerRepository.save(any())).thenReturn(customerDAO);
-//
-//        // Mock the behavior for customerMapper.daoToCustomer
-//        when(customerMapper.daoToCustomer(any())).thenReturn(customer);
-//
-//        // Perform the service method
-//        Customer editedCustomer = customerService.editCustomerById(1L, updatedCustomer);
-//
-//        // Verify the result
-//        assertEquals(updatedCustomer, editedCustomer);
-//
-//        // Verify that customerRepository.findById and customerRepository.save are called
-//        verify(customerRepository, times(1)).findById(1L);
-//        verify(customerRepository, times(1)).save(any());
-//
-//    }
 
 
     @Test

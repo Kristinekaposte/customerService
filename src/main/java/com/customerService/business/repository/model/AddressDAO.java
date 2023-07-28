@@ -32,12 +32,4 @@ public class AddressDAO {
 
     @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
-
-    /**
-     * Hibernate will figure out that it's
-     * referenced to CustomerDAO table where @JoinColumn is
-     * this makes bi-directional relationship for tables.
-     */
-//    @OneToOne(mappedBy = "addressDAO" )
-//   private CustomerDAO customerDAO;
 }

@@ -54,7 +54,7 @@ public class CustomerController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     @ApiOperation(value = "Find a Customer by ID",
             notes = "Returns a single Customer entry based on the provided ID",
             response = Customer.class)
@@ -87,6 +87,7 @@ public class CustomerController {
     public ResponseEntity<?> saveCustomer(@RequestBody @Valid Customer customer) {
         String email = customer.getEmail();
         if (customerService.isEmailExisting(email)) {
+            log.info("The email " + email +" is already registered");
             return new ResponseEntity<>("Sorry, the email " + email + " is already registered.", HttpStatus.BAD_REQUEST);
         }
         Customer savedCustomer = customerService.saveCustomer(customer);
@@ -106,6 +107,7 @@ public class CustomerController {
     })
     public ResponseEntity<?> editCustomerById(@PathVariable Long id, @RequestBody @Valid Customer updatedCustomer) {
         if (!customerService.isCustomerPresent(id)) {
+            log.warn("Sorry, the customer with id " + id + " does not exist.");
             return new ResponseEntity<>("Sorry, the customer id " + id + " does not exist.", HttpStatus.NOT_FOUND);
         }
         String email = updatedCustomer.getEmail();
@@ -128,9 +130,9 @@ public class CustomerController {
             @ApiResponse(code = 500, message = "Server error")
     })
     public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
-        log.info("Deleting Customer entry with ID: {}", id);
         Boolean isDeleteSuccessful = customerService.deleteCustomerById(id);
         if (isDeleteSuccessful) {
+            log.info("Customer entry with ID: {} deleted", id);
             return ResponseEntity.ok("Customer entry with ID " + id + " deleted");
         }
         log.warn("Cannot delete Customer entry with ID: {}, customer not found", id);

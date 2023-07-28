@@ -26,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper;
     @Autowired
     private AddressMapper addressMapper;
+
     public List<Customer> getAllCustomers() {
         List<Customer> list = customerRepository.findAll()
                 .stream()
@@ -42,8 +43,8 @@ public class CustomerServiceImpl implements CustomerService {
             log.info("Customer with id {} does not exist.", id);
             return Optional.empty();
         }
-            log.info("Customer with id {} found.", id);
-            return customerDAO.map(customerMapper::daoToCustomer);
+        log.info("Customer with id {} found.", id);
+        return customerDAO.map(customerMapper::daoToCustomer);
     }
 
     @Override
@@ -55,15 +56,14 @@ public class CustomerServiceImpl implements CustomerService {
             log.info("Customer with ID {} is saved successfully.", newCustomerDAO.getId());
             return customerMapper.daoToCustomer(newCustomerDAO);
         }
-            log.warn("Failed to save customer.");
-            return null;
+        log.warn("Failed to save customer.");
+        return null;
     }
-
 
     /**
      * Method is running within a transaction.It ensures that the method is executed as a single unit,
      * and if any part of the method fails, the entire transaction is rolled back.
-     *
+     * <p>
      * Update is happening only in URL providing id,
      * addressDAO id in customerDAO table is ignored and will not be changed  because of OneToMany rel.
      * id - in customerDAO and addressDAO table are ignored to avoid mismatched id's is request body
@@ -73,13 +73,10 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer editCustomerById(Long id, Customer updatedCustomer) {
         CustomerDAO existingCustomerDAO = customerRepository.findById(id).orElse(null);
         if (existingCustomerDAO != null) {
-             // Update the customer's general information
             BeanUtils.copyProperties(updatedCustomer, existingCustomerDAO, "id", "addressDAO");
-            // Update the customer's associated address
             AddressDAO existingAddressDAO = existingCustomerDAO.getAddressDAO();
             AddressDAO updatedAddressDAO = addressMapper.addressToDAO(updatedCustomer.getAddress());
             BeanUtils.copyProperties(updatedAddressDAO, existingAddressDAO, "id");
-            //Save the updated customer, Convert the updated CustomerDAO back to a Customer object and return it
             Customer updatedCustomerObject = customerMapper.daoToCustomer(customerRepository.save(existingCustomerDAO));
             log.info("Updated customer details: {}", updatedCustomerObject);
             return updatedCustomerObject;
@@ -87,7 +84,6 @@ public class CustomerServiceImpl implements CustomerService {
         log.warn("Customer with ID {} not found for updating.", id);
         return null;
     }
-
 
     @Transactional
     @Override

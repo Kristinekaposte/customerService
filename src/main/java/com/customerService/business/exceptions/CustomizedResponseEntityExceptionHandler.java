@@ -1,5 +1,6 @@
 package com.customerService.business.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @RestControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                               HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> errors = new ArrayList<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.add(error.getDefaultMessage());
@@ -30,18 +31,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 status.getReasonPhrase(),
                 "Validation failed",
                 errors.toString());
+        log.info("Seems like validation issue occurred");
         return ResponseEntity.status(status).body(errorResponse);
     }
-
-//    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-//    public ResponseEntity<Object> handleSQLIntegrityConstraintViolation(WebRequest request) {
-//        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        ErrorResponse errorResponse = new ErrorResponse(
-//                LocalDateTime.now(),
-//                status.value(),
-//                status.getReasonPhrase(),
-//                "Constraint Violation, make sure to insert existing data",
-//                request.getDescription(false));
-//        return ResponseEntity.status(status).body(errorResponse);
-//    }
 }
