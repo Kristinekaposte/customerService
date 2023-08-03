@@ -15,8 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
@@ -102,7 +100,6 @@ public class CustomerControllerTest {
         mockMvc.perform(get(URL2 + "/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-
                 .andExpect(jsonPath("$.id").value(customer.getId()))
                 .andExpect(jsonPath("$.firstName").value(customer.getFirstName()))
                 .andExpect(jsonPath("$.email").value(customer.getEmail()))
@@ -241,11 +238,10 @@ public class CustomerControllerTest {
     void testDeleteCustomer_CustomerNotFound() throws Exception {
         when(customerService.deleteCustomerById(99L)).thenReturn(false);
         mockMvc.perform(delete(URL5 + "/99"))
-                .andExpect(status().isNotFound()) // Update to check for 404 Not Found
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value("Customer not found with ID: " + 99L));
         verify(customerService, times(1)).deleteCustomerById(99L);
     }
-
 
     private Customer createCustomer() {
         return new Customer(1L, "email@email.com", "password1", "name1", "lastName1",
@@ -268,22 +264,4 @@ public class CustomerControllerTest {
         list.add(customer);
         return list;
     }
-
-
-    private CustomerDAO createCustomerDAO(AddressDAO addressDAO) {
-        return new CustomerDAO(1L, "email@email.com", "password1", "name1", "lastName1", addressDAO);
-    }
-
-    private AddressDAO createAddressDAO() {
-        return new AddressDAO(1L, "12345678", "Riga", "Riga", "1001");
-    }
-
-    private Address createAddress() {
-        return new Address(1L, "12345678", "Riga", "Riga", "1001");
-    }
-
-    private Address createUpdatedAddress() {
-        return new Address(1L, "464748494", "updated country", "updated city", "6666");
-    }
-
 }

@@ -27,6 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private AddressMapper addressMapper;
 
+    @Override
     public List<Customer> getAllCustomers() {
         List<Customer> list = customerRepository.findAll()
                 .stream()
@@ -97,12 +98,14 @@ public class CustomerServiceImpl implements CustomerService {
         return false;
     }
 
+    @Override
     public boolean isEmailExisting(String email) {
         boolean emailExists = customerRepository.existsByEmail(email);
         log.info("Email '{}' exists in database: {}", email, emailExists);
         return emailExists;
     }
 
+    @Override
     public boolean isCustomerPresent(Long id) {
         return customerRepository.existsById(id);
     }

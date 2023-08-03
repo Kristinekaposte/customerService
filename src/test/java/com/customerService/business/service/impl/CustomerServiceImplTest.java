@@ -62,7 +62,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void testGetAllCustomerEntries_Successful() {
+    void testGetAllCustomerEntries_Successful() {
         when(customerRepository.findAll()).thenReturn(customerDAOList);
         when(customerMapper.daoToCustomer(customerDAO)).thenReturn(customer);
         List<Customer> list = customerService.getAllCustomers();
@@ -72,7 +72,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void testGetAllCustomers_ListEmpty_Successful() {
+    void testGetAllCustomers_ListEmpty_Successful() {
         when(customerRepository.findAll()).thenReturn(Collections.emptyList());
         List<Customer> result = customerService.getAllCustomers();
         verify(customerRepository, times(1)).findAll();
@@ -122,27 +122,15 @@ public class CustomerServiceImplTest {
         verify(customerMapper, times(0)).daoToCustomer(any());
     }
 
-
     @Test
     void testEditCustomerById_CustomerFound_Successful() {
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customerDAO));
-
-        // Mock addressMapper.addressToDAO
         when(addressMapper.addressToDAO(updatedAddress)).thenReturn(new AddressDAO());
-
-        // Mock customerRepository.save
         when(customerRepository.save(any(CustomerDAO.class))).thenReturn(customerDAO);
-
-        // Mock customerMapper.daoToCustomer
         when(customerMapper.daoToCustomer(customerDAO)).thenReturn(updatedCustomer);
-
-        // Call the method under test
         Customer result = customerService.editCustomerById(1L, updatedCustomer);
-
-        // Verify the results
         assertNotNull(result);
         assertEquals(updatedCustomer, result);
-        // Verify that the repository methods were called
         verify(customerRepository, times(1)).findById(1L);
         verify(customerRepository, times(1)).save(any(CustomerDAO.class));
         verify(addressMapper, times(1)).addressToDAO(updatedAddress);
@@ -158,7 +146,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void testDeleteCustomerById_ExistingCustomer_Successful() {
+    void testDeleteCustomerById_ExistingCustomer_Successful() {
         when(customerRepository.existsById(1L)).thenReturn(true);
         boolean isDeleted = customerService.deleteCustomerById(1L);
         assertTrue(isDeleted);
@@ -166,7 +154,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void testDeleteCustomerById_NonExistingCustomer_Unsuccessful() {
+    void testDeleteCustomerById_NonExistingCustomer_Unsuccessful() {
         when(customerRepository.existsById(99L)).thenReturn(false);
         boolean isDeleted = customerService.deleteCustomerById(99L);
         assertFalse(isDeleted);
@@ -174,14 +162,14 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void testIsEmailExisting_EmailExists() {
+    void testIsEmailExisting_EmailExists() {
         when(customerRepository.existsByEmail("existingEmail@email.com")).thenReturn(true);
         boolean result = customerService.isEmailExisting("existingEmail@email.com");
         assertTrue(result);
     }
 
     @Test
-    public void testIsEmailExisting_EmailDoesNotExist() {
+    void testIsEmailExisting_EmailDoesNotExist() {
         when(customerRepository.existsByEmail("nonexisting@email.com")).thenReturn(false);
         boolean result = customerService.isEmailExisting("nonexisting@email.com");
         assertFalse(result);

@@ -63,7 +63,7 @@ public class CustomerController {
             @ApiResponse(code = 404, message = "The server has not found anything matching the Request-URI"),
             @ApiResponse(code = 500, message = "Server error")})
 
-    public ResponseEntity<Customer> getInternStaffingById(@ApiParam(value = "id of the Customer entry", required = true)
+    public ResponseEntity<Customer> getCustomerById(@ApiParam(value = "id of the Customer entry", required = true)
                                                           @PathVariable("id") Long id) {
         Optional<Customer> customerOptional = customerService.findCustomerById(id);
         if (customerOptional.isPresent()) {
@@ -130,7 +130,7 @@ public class CustomerController {
             @ApiResponse(code = 500, message = "Server error")
     })
     public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
-        Boolean isDeleteSuccessful = customerService.deleteCustomerById(id);
+        boolean isDeleteSuccessful = customerService.deleteCustomerById(id);
         if (isDeleteSuccessful) {
             log.info("Customer entry with ID: {} deleted", id);
             return ResponseEntity.ok("Customer entry with ID " + id + " deleted");
@@ -139,4 +139,15 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found with ID: " + id);
     }
 
+    @GetMapping("/isCustomerExistingById/{id}")
+    @ApiOperation(value = "Check if a Customer exists by ID",
+            notes = "Returns true if a Customer entry exists based on the provided ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The request has succeeded"),
+            @ApiResponse(code = 500, message = "Server error")
+    })
+    public boolean isCustomerExistingById(@ApiParam(value = "ID of the Customer entry", required = true)
+                                          @PathVariable("id") Long id) {
+        return customerService.isCustomerPresent(id);
+    }
 }
