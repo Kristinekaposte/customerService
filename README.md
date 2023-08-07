@@ -1,5 +1,5 @@
 # customerService
-Create customerdb schema in MyAQL
+Create customerdb schema in MySQL
 Launch project
 
 Project structure:
